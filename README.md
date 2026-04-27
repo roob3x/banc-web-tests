@@ -4,3 +4,4 @@ para analisar e mapear elementos e execucoes
 - npx cypress open
 Executar os testes em modo headless
 -npx cypress run
+-npm test
