@@ -1,7 +1,9 @@
 describe('Login', () => {
   beforeEach(() => {
     // Arrange
-    cy.visit(Cypress.env('url'))
+    
+    const url = Cypress.env('URL') || 'http://localhost:4000'
+    cy.visit(url)
     //cy.screenshot('apos-visitar-site')
 
   })
