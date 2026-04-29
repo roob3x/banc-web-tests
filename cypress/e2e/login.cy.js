@@ -1,13 +1,26 @@
 describe('Login', () => {
-  it('Login com dados validos devem permitir entrada no sistema', () => {
+  beforeEach(() => {
     // Arrange
-    cy.visit('http://localhost:4000')
+    
+    const url = Cypress.env('URL') || '/'
+    cy.visit(url)
+    //cy.screenshot('apos-visitar-site')
+
+  })
+  it('Login com dados validos devem permitir entrada no sistema', () => {
     // Act
-    cy.get('#username').click().type('julio.lima')
-    cy.get('#senha').click().type('123456')
-    cy.get('#login-section > .btn').click()
+    cy.loginValidCred()
 
     // Assert
     cy.contains('h4', 'Realizar Transferência').should('be.visible')
+  })
+
+  it('Login com dados invalidos devem apresentar mensagem de erro', () => {
+    // Act
+    cy.loginInvalidCred()
+    //cy.get('#login-section > .btn').click()
+
+    // Assert
+    cy.verifyMsgToast('Erro no login. Tente novamente.')
   })
 })
