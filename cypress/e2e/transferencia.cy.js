@@ -4,35 +4,22 @@ describe('Transferencias', () => {
 
         const url = Cypress.env('URL') || '/'
         cy.visit(url)
-        cy.fixture('credenciais').then(cred => {
-            cy.get('#username').click().type(cred.valida.usuario)
-            cy.get('#senha').click().type(cred.valida.senha)
-            cy.get('#login-section > .btn').click()
+        cy.loginValidCred()
         //cy.screenshot('apos-visitar-site')
-        })
 
     })
 
-    it('Deve transfereir quando informo dados e valor validos', () => {
+    it('Deve transferir quando informo dados e valor validos', () => {
 
         // // Act
-        cy.get("label[for='conta-origem']").parent().as('campo-conta-origem')
-        cy.get('@campo-conta-origem').click()
-        cy.get('@campo-conta-origem')
-        .contains('João da Silva')
-        .click()
+        cy.doTransfer('João da Silva', 'Maria', '11')
+        cy.verifyMsgToast('Transferência realizada!')
 
+    })
 
-        cy.get("label[for='conta-destino']").parent().as('campo-conta-destino')
-        cy.get('@campo-conta-destino').click()
-        cy.get('@campo-conta-destino')
-        .contains('Maria')
-        .click()
-
-        cy.get('#valor').type('11')
-        cy.contains('button', 'Transferir').click()
-        cy.get('.toast').should('have.text', 'Transferência realizada!')
-
+    it('Deve apresentar erro quando tentar transferir igual maior que R$ 50000', () => {
+        cy.doTransfer('João da Silva', 'Maria', '5000')
+        cy.verifyMsgToast('Autenticação necessária para transferências acima de R$5.000,00.')
 
     })
 })
